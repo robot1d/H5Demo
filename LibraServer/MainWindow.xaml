@@ -1,0 +1,153 @@
+﻿<controls:MetroWindow x:Class="LibraServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LibraServer"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" BorderBrush="Gray">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="settings"/>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"/>
+                            <!--Visual="{StaticResource appbar_cupcake}"-->
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="deploy cupcakes" />
+                </StackPanel>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MetroMenuItem" TargetType="{x:Type MenuItem}">
+                <Setter Property="HorizontalContentAlignment"
+                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="VerticalContentAlignment"
+                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="RenderOptions.ClearTypeHint"
+                Value="Enabled" />
+                <Setter Property="Background"
+                Value="{DynamicResource MenuItemBackgroundBrush}" />
+                <Setter Property="ScrollViewer.PanningMode"
+                Value="Both" />
+                <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+                <Setter Property="Template"
+                Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                <Style.Triggers>
+                    <Trigger Property="Role"
+                     Value="TopLevelHeader">
+                        <Setter Property="Padding"
+                        Value="7,5,8,6" />
+                        <Setter Property="Template"
+                        Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role"
+                     Value="TopLevelItem">
+                        <Setter Property="Padding"
+                        Value="7,5,8,6" />
+                        <Setter Property="Template"
+                        Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role"
+                     Value="SubmenuHeader">
+                        <Setter Property="Padding"
+                        Value="2,6,2,6" />
+                        <Setter Property="Template"
+                        Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role"
+                     Value="SubmenuItem">
+                        <Setter Property="Padding"
+                        Value="2,6,2,6" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Ellipse x:Key="AccentMenuIcon"
+                     x:Shared="False"
+                     Width="16"
+                     Height="16"
+                     Fill="{Binding ColorBrush, Mode=OneWay}" />
+            <Style x:Key="AccentColorMenuItemStyle"
+                   TargetType="{x:Type MenuItem}"
+                   BasedOn="{StaticResource MetroMenuItem}">
+                <Setter Property="Command"
+                        Value="{Binding ChangeAccentCommand}" />
+                <Setter Property="Icon"
+                        Value="{StaticResource AccentMenuIcon}" />
+                <Setter Property="Header"
+                        Value="{Binding Name, Mode=OneWay}" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="AUTO"/>
+            <!--<RowDefinition Height="AUTO"/>-->
+            <RowDefinition/>
+            <RowDefinition Height="AUTO"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Margin="5" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+            <MenuItem Header="文件(_F)" ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}">
+                <Separator/>
+                <MenuItem Header="退出(_E)"/>
+            </MenuItem>
+            <!--<MenuItem Header="工具(_T)" ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}">
+                <MenuItem Header="WebSocketServer" Click="OnShowWebSocketServer"/>
+                <MenuItem Header="SocketServer" Click="OnShowSocketServer"/>
+            </MenuItem>-->
+            <MenuItem Header="帮助" ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}">
+            </MenuItem>
+        </Menu>
+        <!--<ToolBarTray Grid.Row="1">
+            <ToolBar>
+                <Button Content="webSocket"/>
+                <Button Content="Socket"/>
+            </ToolBar>
+        </ToolBarTray>-->
+        <controls:MetroAnimatedTabControl Grid.Row="1">
+            <controls:MetroTabItem Header="SocketServer">
+                
+            </controls:MetroTabItem>
+            <controls:MetroTabItem Header="WebSocketServer">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="AUTO"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Grid.Row="0">
+                        <!--http://88.8.8.90:3001/index.html?ip=127.0.0.10&port=2005-->
+                        <Label Content="HTML5地址:"/>
+                        <TextBox Width="280" VerticalAlignment="Center" Text="http://77.100.10.19:3001/index.html" Name="html5TextBox"/>
+                        <Label Content="IP地址:"/>
+                        <TextBlock Width="100" VerticalAlignment="Center" Text="192.168.36.36" Name="ipTextBlock"/>
+                        <Label Content="端口:"/>
+                        <controls:NumericUpDown Value="255" Minimum="0" Maximum="65535" Name="portNumeric"/>
+                        <Button Content="启动" Click="OnStartServer"/>
+                        <Button Content="关闭" Click="OnStopServer"/>
+                    </WrapPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Name="qrCodeImg" Grid.Column="0"/>
+                        <ListBox Name="logListBox" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+            </controls:MetroTabItem>
+        </controls:MetroAnimatedTabControl>
+        <StatusBar Grid.Row="2">
+            <Button Content="test"/>
+        </StatusBar>
+    </Grid>
+</controls:MetroWindow>
